@@ -1,7 +1,7 @@
 {
   "expo": {
-    "name": "GymTest1",
-    "slug": "GymTest1",
+    "name": "gymScores",
+    "slug": "gymScores",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/images/icon.png",
