@@ -2,14 +2,19 @@ import { StyleSheet } from 'react-native';
 import React, { useEffect, useState } from 'react';
 import { ActivityIndicator, FlatList, Text, View, TextInput, ToastAndroid } from 'react-native';
 import EditScreenInfo from '../components/EditScreenInfo';
-// import { Text, View } from '../components/Themed';
-import { RootTabScreenProps } from '../types';
+import { MeetDetailsParamList, RootTabScreenProps } from '../types';
 import { Meet } from '../assets/models/meet';
 import { MeetGrid,gridstyles } from '../components/meetGrid';
 
-export default function LiveMeetsScreen({ navigation }: RootTabScreenProps<'LiveMeetsScreen'>) {
+export default function LiveMeets({ navigation }: RootTabScreenProps<'LiveMeets'>) {
     const [isLoading, setLoading] = useState(true);
     const [liveData, setData] = useState([]);
+
+    const handleNav = (sanctionId: number) => {
+        
+        let mdp: MeetDetailsParamList = { sanctionId: sanctionId };
+        navigation.navigate('Meet', mdp)
+    }
 
     const getLiveMeets = async () => {
         try {
@@ -42,7 +47,7 @@ export default function LiveMeetsScreen({ navigation }: RootTabScreenProps<'Live
 
     return (
         <View style={gridstyles.container}>
-            {isLoading ? <ActivityIndicator /> : (<MeetGrid data={liveData} />)
+            {isLoading ? <ActivityIndicator /> : (<MeetGrid data={liveData} clickCallback={handleNav}/>)
             }
         </View>
     );

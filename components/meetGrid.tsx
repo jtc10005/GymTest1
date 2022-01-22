@@ -1,16 +1,16 @@
 import { DataTable } from 'react-native-paper';
 import React, { Component, useEffect, useState } from 'react';
-import { ActivityIndicator, FlatList, Text, View, TextInput, ToastAndroid, StyleSheet,ScrollView } from 'react-native';
+import { ActivityIndicator, FlatList, Text, View, TextInput, ToastAndroid, StyleSheet, ScrollView } from 'react-native';
 import { RootTabScreenProps } from '../types';
 import { Meet } from '../assets/models/meet';
 
-export const MeetGrid = (props: { data: Meet[] }) => {
+export const MeetGrid = (props: { data: Meet[], clickCallback: Function }) => {
 
-    const row = (item: Meet) => (
-        <DataTable.Row key={item.sanctionId}>
+    const row = (item: Meet, callback: Function) => (
+        <DataTable.Row key={item.sanctionId}
+            onPress={() => callback(item.sanctionId)}>
             <DataTable.Cell>{item.name}</DataTable.Cell>
-            <DataTable.Cell>{item.city}</DataTable.Cell>
-            <DataTable.Cell>{item.state}</DataTable.Cell>
+            <DataTable.Cell>{item.city}, {item.state}</DataTable.Cell>
         </DataTable.Row>
     );
 
@@ -19,13 +19,12 @@ export const MeetGrid = (props: { data: Meet[] }) => {
         <DataTable>
             <DataTable.Header>
                 <DataTable.Title>Name</DataTable.Title>
-                <DataTable.Title>City</DataTable.Title>
-                <DataTable.Title>State</DataTable.Title>
+                <DataTable.Title>Location</DataTable.Title>
             </DataTable.Header>
             <ScrollView>
                 {
                     props.data.map((meet: Meet) => {
-                        return (row(meet));
+                        return (row(meet, props.clickCallback));
                     })
                 }
             </ScrollView>

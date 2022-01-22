@@ -2,14 +2,15 @@ import { StyleSheet } from 'react-native';
 
 import EditScreenInfo from '../components/EditScreenInfo';
 import { Text, View } from '../components/Themed';
-import { RootTabScreenProps } from '../types';
+import { MeetDetailsParamList, RootTabScreenProps } from '../types';
 
-export default function TabOneScreen({ navigation }: RootTabScreenProps<'TabOne'>) {
+export default function MeetScreen({ navigation, route }: RootTabScreenProps<'Meet'>) {
+  const { sanctionId } = (route.params as unknown) as MeetDetailsParamList;
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>Test</Text>
+      <Text style={styles.title}>Meet Details {sanctionId.toString()}</Text>
       <View style={styles.separator} lightColor="#eee" darkColor="rgba(255,255,255,0.1)" />
-      <EditScreenInfo path="/screens/TabOneScreen.tsx" />
+      <EditScreenInfo path="/screens/MeetScreen.tsx" />
     </View>
   );
 }

@@ -12,6 +12,11 @@ export default function PastMeets({ navigation }: RootTabScreenProps<'PastMeets'
     const [isLoading, setLoading] = useState(true);
     const [pastData, setData] = useState([]);
 
+    const handleNav = (sanctionId: number) => {
+
+        navigation.navigate('Meet', { sanctionId: sanctionId })
+    }
+
     const getLiveMeets = async () => {
         try {
             setLoading(true);
@@ -46,9 +51,9 @@ export default function PastMeets({ navigation }: RootTabScreenProps<'PastMeets'
 
     return (
         <View style={gridstyles.container}>
-            {isLoading ? <ActivityIndicator /> : (<MeetGrid data={pastData} />)
+            {isLoading ? <ActivityIndicator /> : (<MeetGrid data={pastData} clickCallback={handleNav} />)
             }
         </View>
     )
-   }
+}
 
