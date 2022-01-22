@@ -1,11 +1,12 @@
 
 import { DataTable } from 'react-native-paper';
 import React, { useEffect, useState } from 'react';
-import { ActivityIndicator, FlatList, Text, View, TextInput, ToastAndroid, StyleSheet } from 'react-native';
+import { ActivityIndicator, FlatList, Text, View, TextInput, ToastAndroid, StyleSheet, ScrollView } from 'react-native';
 // import EditScreenInfo from '../components/EditScreenInfo';
 // import { Text, View } from '../components/Themed';
 import { RootTabScreenProps } from '../types';
 import { Meet } from '../assets/models/meet';
+import { MeetGrid, gridstyles } from '../components/meetGrid';
 
 export default function PastMeets({ navigation }: RootTabScreenProps<'PastMeets'>) {
     const [isLoading, setLoading] = useState(true);
@@ -13,6 +14,7 @@ export default function PastMeets({ navigation }: RootTabScreenProps<'PastMeets'
 
     const getLiveMeets = async () => {
         try {
+            setLoading(true);
             const response = await fetch('https://stark-ocean-54886.herokuapp.com/https://api.myusagym.com/v1/meets/past', {
                 method: 'GET',
                 headers: {
@@ -42,37 +44,11 @@ export default function PastMeets({ navigation }: RootTabScreenProps<'PastMeets'
         getLiveMeets();
     }, []);
 
-    const row = (item: Meet) => (
-        <DataTable.Row key={item.sanctionId}>
-            <DataTable.Cell>{item.name}</DataTable.Cell>
-            <DataTable.Cell>{item.city}</DataTable.Cell>
-        </DataTable.Row>
-    );
-
     return (
-        <View style={styles.container}>
-            {isLoading ? <ActivityIndicator /> : (
-                <DataTable>
-                    <DataTable.Header>
-                        <DataTable.Title>Name</DataTable.Title>
-                        <DataTable.Title>City</DataTable.Title>
-                        <DataTable.Title>State</DataTable.Title>
-                    </DataTable.Header>
-
-                    {
-                        pastData.map((meet: Meet) => {
-                            return (row(meet));
-                        })
-                    }
-
-                </DataTable>
-            )}
+        <View style={gridstyles.container}>
+            {isLoading ? <ActivityIndicator /> : (<MeetGrid data={pastData} />)
+            }
         </View>
-    );
-}
+    )
+   }
 
-const styles = StyleSheet.create({
-    container: {
-        flex: 1, padding: 12
-    },
-});
