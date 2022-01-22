@@ -1,6 +1,6 @@
 import { StyleSheet } from 'react-native';
 import React, { useEffect, useState } from 'react';
-import { ActivityIndicator, FlatList, Text, View, TextInput } from 'react-native';
+import { ActivityIndicator, FlatList, Text, View, TextInput, ToastAndroid } from 'react-native';
 import EditScreenInfo from '../components/EditScreenInfo';
 // import { Text, View } from '../components/Themed';
 import { RootTabScreenProps } from '../types';
@@ -26,11 +26,15 @@ export default function LiveMeetsScreen({ navigation }: RootTabScreenProps<'Live
             setData(meetData);
         } catch (error) {
             console.error(error);
+            showToast('There was an error getting meet data')
         } finally {
             setLoading(false);
+            showToast('loading complete')
         }
     }
-
+    function showToast(msg:string) {
+        ToastAndroid.show(msg, ToastAndroid.SHORT);
+    }
     useEffect(() => {
         getLiveMeets();
     }, []);
@@ -42,7 +46,7 @@ export default function LiveMeetsScreen({ navigation }: RootTabScreenProps<'Live
                     data={data}
                     keyExtractor={({ sanctionId }, index) => sanctionId}
                     renderItem={({ item }) => (
-                        <Text style={{ fontSize:15, paddingBottom:10 }}>{item.name}</Text>
+                        <Text style={{ fontSize: 15, paddingBottom: 10 }}>{item.name}</Text>
                     )}
                 />
             )}
