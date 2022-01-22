@@ -19,6 +19,7 @@ import LiveMeetsScreen from '../screens/liveMeetsScreen';
 import TabTwoScreen from '../screens/TabTwoScreen';
 import { RootStackParamList, RootTabParamList, RootTabScreenProps } from '../types';
 import LinkingConfiguration from './LinkingConfiguration';
+import PastMeets from '../screens/pastMeets';
 
 export default function Navigation({ colorScheme }: { colorScheme: ColorSchemeName }) {
   return (
@@ -86,8 +87,8 @@ function BottomTabNavigator() {
         })}
       />
       <BottomTab.Screen
-        name="TabTwo"
-        component={TabTwoScreen}
+        name="PastMeets"
+        component={PastMeets}
         options={{
           title: 'Past Meets',
           tabBarIcon: ({ color }) => <TabBarIcon name="calendar" color={color} />,

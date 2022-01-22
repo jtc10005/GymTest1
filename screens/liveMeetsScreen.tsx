@@ -8,7 +8,7 @@ import { Meet } from '../assets/models/meet';
 
 export default function LiveMeetsScreen({ navigation }: RootTabScreenProps<'LiveMeetsScreen'>) {
     const [isLoading, setLoading] = useState(true);
-    const [data, setData] = useState([]);
+    const [liveMeetData, setData] = useState([]);
 
     const getLiveMeets = async () => {
         try {
@@ -43,7 +43,7 @@ export default function LiveMeetsScreen({ navigation }: RootTabScreenProps<'Live
         <View style={{ flex: 1, padding: 12 }}>
             {isLoading ? <ActivityIndicator /> : (
                 <FlatList
-                    data={data}
+                    data={liveMeetData}
                     keyExtractor={({ sanctionId }, index) => sanctionId}
                     renderItem={({ item }) => (
                         <Text style={{ fontSize: 15, paddingBottom: 10 }}>{item.name}</Text>

@@ -3,7 +3,7 @@ export class Meet {
     sanctionId: number;
     name: string;
     logoUrl: string;
-    startDate?: Date;
+    startDate: Date;
     endDate?: Date;
     city: string;
     state: string;
@@ -27,7 +27,7 @@ export class Meet {
         this.sanctionId = options.sanctionId;
         this.name= options.name;
         this.logoUrl= options.logoUrl ?? '';
-        this.startDate= options.startDate ?? undefined;
+        this.startDate= options.startDate ?? new Date();
         this.endDate= options.endDate ?? undefined;
         this.city= options.city ?? '';
         this.state= options.state ?? '';
