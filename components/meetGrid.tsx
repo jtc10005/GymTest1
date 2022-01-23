@@ -6,6 +6,16 @@ import { Meet } from '../assets/models/meet';
 
 export const MeetGrid = (props: { data: Meet[], clickCallback: Function }) => {
 
+    const [sortNameAscending, setSortNameAscending] = React.useState<boolean | undefined>(undefined);
+
+    const sortedItems = props.data
+        .slice()
+        .sort((item1, item2) =>
+            (sortNameAscending ? item1.name < item2.name : item2.name < item1.name)
+                ? 1
+                : -1
+        );
+
     const row = (item: Meet, callback: Function) => (
         <DataTable.Row key={item.sanctionId}
             onPress={() => callback(item.sanctionId)}>
@@ -18,12 +28,14 @@ export const MeetGrid = (props: { data: Meet[], clickCallback: Function }) => {
 
         <DataTable>
             <DataTable.Header>
-                <DataTable.Title>Name</DataTable.Title>
+                <DataTable.Title
+                    sortDirection={sortNameAscending ? 'ascending' : 'descending'}
+                    onPress={() => setSortNameAscending(!sortNameAscending)} >Name</DataTable.Title>
                 <DataTable.Title>Location</DataTable.Title>
             </DataTable.Header>
             <ScrollView>
                 {
-                    props.data.map((meet: Meet) => {
+                    sortedItems.map((meet: Meet) => {
                         return (row(meet, props.clickCallback));
                     })
                 }
@@ -36,5 +48,11 @@ export const MeetGrid = (props: { data: Meet[], clickCallback: Function }) => {
 export const gridstyles = StyleSheet.create({
     container: {
         flex: 1, padding: 12
+    },
+    input: {
+        height: 40,
+        margin: 12,
+        borderWidth: 1,
+        padding: 10,
     },
 });

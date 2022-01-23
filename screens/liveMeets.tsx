@@ -4,14 +4,15 @@ import { ActivityIndicator, FlatList, Text, View, TextInput, ToastAndroid } from
 import EditScreenInfo from '../components/EditScreenInfo';
 import { MeetDetailsParamList, RootTabScreenProps } from '../types';
 import { Meet } from '../assets/models/meet';
-import { MeetGrid,gridstyles } from '../components/meetGrid';
+import { MeetGrid, gridstyles } from '../components/meetGrid';
 
 export default function LiveMeets({ navigation }: RootTabScreenProps<'LiveMeets'>) {
     const [isLoading, setLoading] = useState(true);
     const [liveData, setData] = useState([]);
+    const [text, onChangeText] = React.useState("");
 
+    /**callback to handle row click */
     const handleNav = (sanctionId: number) => {
-        
         let mdp: MeetDetailsParamList = { sanctionId: sanctionId };
         navigation.navigate('Meet', mdp)
     }
@@ -38,16 +39,42 @@ export default function LiveMeets({ navigation }: RootTabScreenProps<'LiveMeets'
             setLoading(false);
         }
     }
-    function showToast(msg:string) {
+    function showToast(msg: string) {
         ToastAndroid.show(msg, ToastAndroid.SHORT);
     }
     useEffect(() => {
         getLiveMeets();
     }, []);
 
+    const filteredItems = liveData
+        .slice()
+        .filter((x:Meet) => {
+
+            if (text.length > 0) {
+                if (x.city.includes(text)) {
+                    // console.log('filtering city')
+                    return x;
+                }
+                if (x.state.includes(text)) {
+                    // console.log('filtering state')
+                    return x;
+                }
+                if (x.name.includes(text)) {
+                    // console.log('filtering name')
+                    return x;
+                }
+            }
+            return x;
+        });
+
     return (
         <View style={gridstyles.container}>
-            {isLoading ? <ActivityIndicator /> : (<MeetGrid data={liveData} clickCallback={handleNav}/>)
+            <TextInput placeholder='Search for'
+                style={gridstyles.input}
+                onChangeText={onChangeText}
+                value={text} />
+            {isLoading ? <ActivityIndicator /> : (
+                <MeetGrid data={filteredItems} clickCallback={handleNav} />)
             }
         </View>
     );
