@@ -2,8 +2,6 @@
 import { DataTable } from 'react-native-paper';
 import React, { useEffect, useState } from 'react';
 import { ActivityIndicator, FlatList, Text, View, TextInput, ToastAndroid, StyleSheet, ScrollView } from 'react-native';
-// import EditScreenInfo from '../components/EditScreenInfo';
-// import { Text, View } from '../components/Themed';
 import { RootTabScreenProps } from '../types';
 import { Meet } from '../assets/models/meet';
 import { MeetGrid, gridstyles } from '../components/meetGrid';
@@ -13,7 +11,6 @@ export default function PastMeets({ navigation }: RootTabScreenProps<'PastMeets'
     const [pastData, setData] = useState([]);
 
     const handleNav = (sanctionId: number) => {
-
         navigation.navigate('Meet', { sanctionId: sanctionId })
     }
 
