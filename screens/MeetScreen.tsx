@@ -1,10 +1,12 @@
 import React, { useEffect, useState } from 'react';
-import { ActivityIndicator, FlatList, Text, View, TextInput, ToastAndroid, StyleSheet, ScrollView, } from 'react-native';
+import { ActivityIndicator, FlatList, Text, TextInput, ToastAndroid, StyleSheet, ScrollView, TouchableOpacity } from 'react-native';
 import EditScreenInfo from '../components/EditScreenInfo';
 import { MeetDetailsParamList, RootTabScreenProps } from '../types';
-import { Meet } from '../assets/models/meet';
+// import { Meet } from '../assets/models/meet';
 import { MeetDetails } from '../assets/models/meetDetails';
-
+import { TouchableLink } from '../components/touchableLink';
+import { View } from '../components/Themed';
+import { Session } from '../assets/models/session';
 export default function MeetScreen({ navigation, route }: RootTabScreenProps<'Meet'>) {
   const { sanctionId } = (route.params as unknown) as MeetDetailsParamList;
   const [isLoading, setLoading] = useState(true);
@@ -26,61 +28,80 @@ export default function MeetScreen({ navigation, route }: RootTabScreenProps<'Me
           origin: '*'
         },
       });
-      debugger;
+
       const json = await response.json();
-      console.log(json.sanction)
       const meetData = new MeetDetails(json);
-      // .map((x: Meet) => new Meet(x));
-      // .filter((x: Meet) => x.startDate >= new Date(new Date().getFullYear(), 0, 1));
-      console.log(meetData)
       setMeetData(meetData);
+      console.log(meetData)
+      //INITIAL SESSION DATA IS GETTING LOADED BUT NO SESSION DATA
     } catch (error) {
       console.error(error);
-      showToast('There was an error getting meet data')
+      
     } finally {
       setLoading(false);
-      showToast('loading complete')
+      
     }
   }
-  function showToast(msg: string) {
-    ToastAndroid.show(msg, ToastAndroid.SHORT);
-  }
+  // function showToast(msg: string) {
+  //   ToastAndroid.show(msg, ToastAndroid.SHORT);
+  // }
   useEffect(() => {
     getMeetDetails();
   }, []);
 
   return (
-    <View style={styles.container}>
-      <Text style={styles.title}>{meetData?.sanction?.name}</Text>
-      {/* <View style={styles.separator} /> */}
-      <link rel="stylesheet" href="{meetData?.sanction?.siteLink}" />
-      <Text style={styles.subtext}>{meetData?.sanction?.address1}</Text>
-      {meetData?.sanction?.address1 
-        ? <Text>{meetData?.sanction?.address2} {meetData?.sanction?.city}, {meetData?.sanction?.state}</Text> 
-        : <Text>{meetData?.sanction?.city}, {meetData?.sanction?.state}</Text>}
-      
+    <View style={styles.container} >
+      {isLoading ? <ActivityIndicator size="large" color="#00ff00" /> :
+        <View >
+          <TouchableLink url={meetData?.sanction?.siteLink} style={styles.title} text={meetData?.sanction?.name}></TouchableLink>
 
-    </View>
+          <View style={styles.separator} />
+
+          <Text style={styles.subtext}>{meetData?.sanction?.address1}</Text>
+
+          {
+            meetData?.sanction?.address1
+              ? <Text>{meetData?.sanction?.address2} {meetData?.sanction?.city}, {meetData?.sanction?.state}</Text>
+              : <Text>{meetData?.sanction?.city}, {meetData?.sanction?.state}</Text>
+          }
+
+          <View>
+            <Text style={styles.subtext}>Sessions:</Text>
+            {/* <Text>{meetData?.sanction?.sessions[0].name}</Text> */}
+            <ScrollView>
+                {
+                    meetData?.sanction?.sessions?.map((s: Session) => {
+                        <Text>s.date</Text>
+                    })
+                }
+            </ScrollView>
+          </View>
+        </View>}
+    </View >
   );
 }
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    alignItems: 'center',
-    justifyContent: 'center',
+    flexDirection: "column",
+    alignContent: "center",
+    // justifyContent: 'center',
   },
   title: {
     fontSize: 20,
     fontWeight: 'bold',
+    padding: 5,
+
   },
   separator: {
-    // marginVertical: 5,
+    marginVertical: 5,
     height: .5,
     width: '80%',
     color: 'rgba(255,255,255,0.1)',
   },
   subtext: {
     fontSize: 14,
+    paddingLeft: 5,
   }
 });
