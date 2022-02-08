@@ -9,7 +9,7 @@ import { MeetGrid, gridstyles } from '../components/meetGrid';
 export default function LiveMeets({ navigation }: RootTabScreenProps<'LiveMeets'>) {
     const [isLoading, setLoading] = useState(true);
     const [liveData, setData] = useState([]);
-    const [text, onChangeText] = React.useState("");
+    const [filterText, onChangeText] = React.useState("");
 
     /**callback to handle row click */
     const handleNav = (sanctionId: number) => {
@@ -46,35 +46,14 @@ export default function LiveMeets({ navigation }: RootTabScreenProps<'LiveMeets'
         getLiveMeets();
     }, []);
 
-    const filteredItems = liveData
-        .slice()
-        .filter((x:Meet) => {
-
-            if (text.length > 0) {
-                if (x.city.includes(text)) {
-                    // console.log('filtering city')
-                    return x;
-                }
-                if (x.state.includes(text)) {
-                    // console.log('filtering state')
-                    return x;
-                }
-                if (x.name.includes(text)) {
-                    // console.log('filtering name')
-                    return x;
-                }
-            }
-            return x;
-        });
-
     return (
         <View style={gridstyles.container}>
             <TextInput placeholder='Search for'
                 style={gridstyles.input}
                 onChangeText={onChangeText}
-                value={text} />
+                value={filterText} />
             {isLoading ? <ActivityIndicator /> : (
-                <MeetGrid data={filteredItems} clickCallback={handleNav} />)
+                <MeetGrid data={liveData} clickCallback={handleNav} filterString={filterText}/>)
             }
         </View>
     );
