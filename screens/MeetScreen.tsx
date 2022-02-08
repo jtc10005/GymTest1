@@ -1,12 +1,13 @@
 import React, { useEffect, useState } from 'react';
 import { ActivityIndicator, FlatList, Text, TextInput, ToastAndroid, StyleSheet, ScrollView, TouchableOpacity } from 'react-native';
-import EditScreenInfo from '../components/EditScreenInfo';
-import { MeetDetailsParamList, RootTabScreenProps } from '../types';
+import { DataTable } from 'react-native-paper';
+import { MeetDetailsParamList, MeetSessionParamList, RootTabScreenProps } from '../types';
 // import { Meet } from '../assets/models/meet';
 import { MeetDetails } from '../assets/models/meetDetails';
 import { TouchableLink } from '../components/touchableLink';
 import { View } from '../components/Themed';
 import { Session } from '../assets/models/session';
+import { getLocalTime } from '../assets/utils/dateTime';
 export default function MeetScreen({ navigation, route }: RootTabScreenProps<'Meet'>) {
   const { sanctionId } = (route.params as unknown) as MeetDetailsParamList;
   const [isLoading, setLoading] = useState(true);
@@ -35,46 +36,65 @@ export default function MeetScreen({ navigation, route }: RootTabScreenProps<'Me
       setMeetData(meetData);
     } catch (error) {
       console.error(error);
-      
+
     } finally {
       setLoading(false);
-      
+
     }
   }
-  // function showToast(msg: string) {
-  //   ToastAndroid.show(msg, ToastAndroid.SHORT);
-  // }
+
+
   useEffect(() => {
     getMeetDetails();
   }, []);
+
+  const goToSessionDetails = (sessionId: string) => {
+    const resultSet = meetData.sessionResultSets.find(x => x.sessionId?.toUpperCase() === sessionId.toUpperCase())
+    if (resultSet && resultSet.resultSetId) {
+      let mdp: MeetSessionParamList = { resultSetId: resultSet?.resultSetId };
+      navigation.navigate('MeetSession', mdp)
+    }
+  }
 
   return (
     <View style={styles.container} >
       {isLoading ? <ActivityIndicator size="large" color="#00ff00" /> :
         <View >
           <TouchableLink url={meetData?.sanction?.siteLink} style={styles.title} text={meetData?.sanction?.name}></TouchableLink>
-
+          <Text style={styles.subtext}>Status: {meetData?.sanction?.meetStatus}</Text>
           <View style={styles.separator} />
-
+          <Text style={styles.subtext}>{meetData?.sanction?.siteName}</Text>
           <Text style={styles.subtext}>{meetData?.sanction?.address1}</Text>
 
           {
-            meetData?.sanction?.address1
+            meetData?.sanction?.address2
               ? <Text>{meetData?.sanction?.address2} {meetData?.sanction?.city}, {meetData?.sanction?.state}</Text>
               : <Text>{meetData?.sanction?.city}, {meetData?.sanction?.state}</Text>
           }
 
-          <View>
-            <Text style={styles.subtext}>Sessions:</Text>
-            {/* <Text>{meetData?.sanction?.sessions[0].name}</Text> */}
+          <DataTable>
+            <DataTable.Header>
+              <DataTable.Title >sessionId</DataTable.Title>
+              <DataTable.Title>Dates</DataTable.Title>
+              <DataTable.Title>name</DataTable.Title>
+              <DataTable.Title>Warmup Time</DataTable.Title>
+              <DataTable.Title>Start Time</DataTable.Title>
+            </DataTable.Header>
             <ScrollView>
-                {
-                    meetData?.sessions?.map((s: Session) => {
-                        return <Text key={s.sessionId} style={styles.subtext}> {s.date} {s.name}</Text>
-                    })
-                }
+              {
+                meetData?.sessions?.map((item: Session) => {
+                  return <DataTable.Row key={item.sessionId}
+                    onPress={() => goToSessionDetails(item.sessionId)}>
+                    <DataTable.Cell>{item.sessionId}</DataTable.Cell>
+                    <DataTable.Cell>{item.date}</DataTable.Cell>
+                    <DataTable.Cell>{item.name}</DataTable.Cell>
+                    <DataTable.Cell>{getLocalTime(item?.time1)}</DataTable.Cell>
+                    <DataTable.Cell>{getLocalTime(item.time3)}</DataTable.Cell>
+                  </DataTable.Row>
+                })
+              }
             </ScrollView>
-          </View>
+          </DataTable>
         </View>}
     </View >
   );

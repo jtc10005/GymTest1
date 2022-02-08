@@ -17,6 +17,7 @@ export type RootStackParamList = {
   Root: NavigatorScreenParams<RootTabParamList> | undefined;
   Modal: undefined;
   Meet: MeetDetailsParamList;
+  MeetSession: MeetSessionParamList;
   NotFound: undefined;
 };
 
@@ -29,11 +30,15 @@ export type RootTabParamList = {
   LiveMeets: undefined;
   PastMeets: undefined;
   Settings: undefined;
-  Meet:  MeetDetailsParamList;
+  Meet: MeetDetailsParamList;
+  MeetSession: MeetSessionParamList;
 };
 
 export type MeetDetailsParamList = {
   sanctionId: number;
+};
+export type MeetSessionParamList = {
+  resultSetId: number;
 };
 export type RootTabScreenProps<Screen extends keyof RootTabParamList> = CompositeScreenProps<
   BottomTabScreenProps<RootTabParamList, Screen>,

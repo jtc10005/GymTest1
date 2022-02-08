@@ -4,6 +4,15 @@ import { ActivityIndicator, FlatList, Text, View, TextInput, ToastAndroid, Style
 import { RootTabScreenProps } from '../types';
 import { Meet } from '../assets/models/meet';
 
+const row = (item: Meet, callback: Function) => (
+    <DataTable.Row key={item.sanctionId}
+        onPress={() => callback(item.sanctionId)}>
+        <DataTable.Cell>{item.name}</DataTable.Cell>
+        <DataTable.Cell>{item.city}, {item.state}</DataTable.Cell>
+        <DataTable.Cell>{item.getFromToDate()}</DataTable.Cell>
+    </DataTable.Row>
+);
+
 export const MeetGrid = (props: { data: Meet[], filterString: string; clickCallback: Function }) => {
 
     const [sortNameAscending, setSortNameAscending] = React.useState<boolean | undefined>(undefined);
@@ -25,15 +34,6 @@ export const MeetGrid = (props: { data: Meet[], filterString: string; clickCallb
                     ? 1
                     : -1
             );
-
-    const row = (item: Meet, callback: Function) => (
-        <DataTable.Row key={item.sanctionId}
-            onPress={() => callback(item.sanctionId)}>
-            <DataTable.Cell>{item.name}</DataTable.Cell>
-            <DataTable.Cell>{item.city}, {item.state}</DataTable.Cell>
-            <DataTable.Cell>{item.getFromToDate()}</DataTable.Cell>
-        </DataTable.Row>
-    );
 
     return (
 

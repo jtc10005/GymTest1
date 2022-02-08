@@ -1,5 +1,5 @@
 export class Session {
-    sessionId?: number;
+    sessionId: string;
     sanctionId?: number;
     name?: string;
     date?: Date;
@@ -17,4 +17,7 @@ export class Session {
     squadH?: string;
     squadI?: string;
     program?: string;
+    constructor(opt: { sessionId: string }) {
+        this.sessionId = opt.sessionId;
+    }
 }
