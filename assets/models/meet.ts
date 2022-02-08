@@ -38,6 +38,15 @@ export class Meet {
     }
 
     getFromToDate(): string {
-        return `From: ${new Date(this.startDate).toLocaleDateString()} ${this.endDate ? 'To: ' + new Date(this.endDate).toLocaleDateString() : ''}`
+        return `From: ${new Date(this.startDate).toLocaleDateString()} ${this.endDate ? 'To: ' + new Date(this.endDate).toLocaleDateString() : ''}`;
+    }
+    getFromDate(): string {
+        return `${new Date(this.startDate).toLocaleDateString()}`;
+    }
+    getToDate(): string {
+        return `${this.endDate ? new Date(this.endDate).toLocaleDateString() : ''}`;
+    }
+    getCityState(): string {
+        return `${this.city}, ${this.state}`;
     }
 }
