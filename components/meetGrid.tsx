@@ -43,6 +43,7 @@ export const MeetGrid = (props: { data: Meet[], filterString: string; clickCallb
                     sortDirection={sortNameAscending ? 'ascending' : 'descending'}
                     onPress={() => setSortNameAscending(!sortNameAscending)} >Name</DataTable.Title>
                 <DataTable.Title>Location</DataTable.Title>
+                <DataTable.Title>Dates</DataTable.Title>
             </DataTable.Header>
             <ScrollView>
                 {

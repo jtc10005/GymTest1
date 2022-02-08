@@ -10,7 +10,6 @@ export default function PastMeets({ navigation }: RootTabScreenProps<'PastMeets'
     const [pastData, setData] = useState([]);
     const [filterText, onChangeText] = React.useState("");
     const handleNav = (sanctionId: number) => {
-
         navigation.navigate('Meet', { sanctionId: sanctionId })
     }
 
