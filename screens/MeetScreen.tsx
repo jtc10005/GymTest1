@@ -75,8 +75,8 @@ export default function MeetScreen({ navigation, route }: RootTabScreenProps<'Me
           <DataTable>
             <DataTable.Header>
               <DataTable.Title >sessionId</DataTable.Title>
-              <DataTable.Title>Dates</DataTable.Title>
-              <DataTable.Title>name</DataTable.Title>
+              <DataTable.Title>Name</DataTable.Title>
+              <DataTable.Title>Date</DataTable.Title>
               <DataTable.Title>Warmup Time</DataTable.Title>
               <DataTable.Title>Start Time</DataTable.Title>
             </DataTable.Header>
@@ -86,8 +86,8 @@ export default function MeetScreen({ navigation, route }: RootTabScreenProps<'Me
                   return <DataTable.Row key={item.sessionId}
                     onPress={() => goToSessionDetails(item.sessionId)}>
                     <DataTable.Cell>{item.sessionId}</DataTable.Cell>
-                    <DataTable.Cell>{item.date}</DataTable.Cell>
                     <DataTable.Cell>{item.name}</DataTable.Cell>
+                    <DataTable.Cell>{item.date}</DataTable.Cell>
                     <DataTable.Cell>{getLocalTime(item?.time1)}</DataTable.Cell>
                     <DataTable.Cell>{getLocalTime(item.time3)}</DataTable.Cell>
                   </DataTable.Row>
