@@ -31,6 +31,7 @@ export default function MeetScreen({ navigation, route }: RootTabScreenProps<'Me
 
       const json = await response.json();
       const meetData = new MeetDetails(json);
+      console.log(meetData);
       setMeetData(meetData);
     } catch (error) {
       console.error(error);
@@ -69,7 +70,7 @@ export default function MeetScreen({ navigation, route }: RootTabScreenProps<'Me
             <ScrollView>
                 {
                     meetData?.sessions?.map((s: Session) => {
-                        <Text>s.date</Text>
+                        return <Text key={s.sessionId} style={styles.subtext}> {s.date} {s.name}</Text>
                     })
                 }
             </ScrollView>
