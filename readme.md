@@ -1,5 +1,7 @@
 # Gymnastics scores android app
 
+This is a react-native app that seeks to replicate some of the functionality of my gym app.
+
 ## installation instructions
 1. pull branch
 2. npm install
