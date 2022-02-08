@@ -23,17 +23,21 @@ export class Meet {
         website?: string;
         program?: number
         hasMeetInfo?: boolean
-    }){
+    }) {
         this.sanctionId = options.sanctionId;
-        this.name= options.name;
-        this.logoUrl= options.logoUrl ?? '';
-        this.startDate= options.startDate ?? new Date();
-        this.endDate= options.endDate ?? undefined;
-        this.city= options.city ?? '';
-        this.state= options.state ?? '';
-        this.siteName= options.siteName ?? undefined;
-        this.website= options.website ?? '';
-        this.program= options.program ?? 0;
-        this.hasMeetInfo= options.hasMeetInfo ?? false;;
+        this.name = options.name;
+        this.logoUrl = options.logoUrl ?? '';
+        this.startDate = options.startDate ?? new Date();
+        this.endDate = options.endDate ?? undefined;
+        this.city = options.city ?? '';
+        this.state = options.state ?? '';
+        this.siteName = options.siteName ?? undefined;
+        this.website = options.website ?? '';
+        this.program = options.program ?? 0;
+        this.hasMeetInfo = options.hasMeetInfo ?? false;;
+    }
+
+    getFromToDate(): string {
+        return `From: ${new Date(this.startDate).toLocaleDateString()} ${this.endDate ? 'To: ' + new Date(this.endDate).toLocaleDateString() : ''}`
     }
 }

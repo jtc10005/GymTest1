@@ -10,7 +10,7 @@ This is a react-native app that seeks to replicate some of the functionality of 
 
 ## TODO:
 - grid header sorting - kinda working?  need to finish
-- filtering on grid - started a text filter but its not working
+- DONE - filtering on grid - started a text filter but its not working
 - meet specific details
 - meet specific scores
 - local cache fav gymnasts???
