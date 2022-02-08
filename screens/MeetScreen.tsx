@@ -16,7 +16,7 @@ export default function MeetScreen({ navigation, route }: RootTabScreenProps<'Me
     try {
       setLoading(true);
       if (!sanctionId) {
-        console.error('no sacntion id');
+        console.error('no sanction id');
       }
       const url = `https://stark-ocean-54886.herokuapp.com/https://api.myusagym.com/v2/sanctions/${sanctionId}`;
       // console.log(url);
@@ -32,8 +32,6 @@ export default function MeetScreen({ navigation, route }: RootTabScreenProps<'Me
       const json = await response.json();
       const meetData = new MeetDetails(json);
       setMeetData(meetData);
-      console.log(meetData)
-      //INITIAL SESSION DATA IS GETTING LOADED BUT NO SESSION DATA
     } catch (error) {
       console.error(error);
       
@@ -70,7 +68,7 @@ export default function MeetScreen({ navigation, route }: RootTabScreenProps<'Me
             {/* <Text>{meetData?.sanction?.sessions[0].name}</Text> */}
             <ScrollView>
                 {
-                    meetData?.sanction?.sessions?.map((s: Session) => {
+                    meetData?.sessions?.map((s: Session) => {
                         <Text>s.date</Text>
                     })
                 }
