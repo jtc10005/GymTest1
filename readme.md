@@ -1,5 +1,7 @@
 # Gymnastics scores android app
 
+This is a react-native app that seeks to replicate some of the functionality of my gym app.
+
 ## installation instructions
 1. pull branch
 2. npm install
@@ -8,7 +10,7 @@
 
 ## TODO:
 - grid header sorting - kinda working?  need to finish
-- filtering on grid - started a text filter but its not working
+- DONE - filtering on grid - started a text filter but its not working
 - meet specific details
 - meet specific scores
 - local cache fav gymnasts???
