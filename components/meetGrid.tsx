@@ -18,9 +18,9 @@ export const MeetGrid = (props: { data: Meet[], filterString: string; clickCallb
 
     const [sortName, setSortName] = React.useState<string | undefined>('From');
     const [sortAscending, setSortAscending] = React.useState<boolean>(false);
-    
+
     const filter = props?.filterString?.toLowerCase();
-    const sortedItems = filter && filter != '' ? props.data
+    const sortedItems = filter && filter != '' && (!sortName || sortName === "") ? props.data
         .filter(x => x?.name?.toLowerCase().includes(filter)
             || x?.city?.toLowerCase().includes(filter)
             || x?.state?.toLowerCase().includes(filter))
@@ -31,6 +31,17 @@ export const MeetGrid = (props: { data: Meet[], filterString: string; clickCallb
                     || x?.city?.toLowerCase().includes(filter)
                     || x?.state?.toLowerCase().includes(filter))
                 .slice()
+                .sort((item1, item2) =>
+                    sortName === 'Name' ?
+                        (sortAscending ? item1.name < item2.name : item2.name < item1.name) ? 1 : -1 :
+                        sortName === 'Location' ?
+                            (sortAscending ? item1.getCityState() < item2.getCityState() : item2.getCityState() < item1.getCityState()) ? 1 : -1 :
+                            sortName === 'From' ?
+                                (sortAscending ? item1.startDate < item2.startDate : item2.startDate < item1.startDate) ? 1 : -1 :
+                                sortName === 'To' && item1.endDate && item2.endDate ?
+                                    (sortAscending ? item1.endDate < item2.endDate : item2.endDate < item1.endDate) ? 1 : -1 :
+                                    0
+                )
             : sortName && sortName != "" ?
                 props.data
                     .slice()
