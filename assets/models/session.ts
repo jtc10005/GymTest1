@@ -2,7 +2,7 @@ export class Session {
     sessionId: string;
     sanctionId?: number;
     name?: string;
-    date?: Date;
+    date: Date = new Date();
     time1?: string;
     time2?: string;
     time3?: string;

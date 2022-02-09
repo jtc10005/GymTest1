@@ -31,9 +31,11 @@ export default function MeetScreen({ navigation, route }: RootTabScreenProps<'Me
       });
 
       const json = await response.json();
-      const meetData = new MeetDetails(json);
+      let meetData = new MeetDetails(json);
+      // meetData.sessions = meetData.sessions.sort((x, y) => x.date && y.date ? (x.date > y.date) : 0);
       console.log(meetData);
       setMeetData(meetData);
+      // console.log(meetData.getSessions());
     } catch (error) {
       console.error(error);
 
@@ -71,25 +73,24 @@ export default function MeetScreen({ navigation, route }: RootTabScreenProps<'Me
               ? <Text>{meetData?.sanction?.address2} {meetData?.sanction?.city}, {meetData?.sanction?.state}</Text>
               : <Text>{meetData?.sanction?.city}, {meetData?.sanction?.state}</Text>
           }
-
           <DataTable>
             <DataTable.Header>
-              <DataTable.Title >sessionId</DataTable.Title>
-              <DataTable.Title>Name</DataTable.Title>
-              <DataTable.Title>Date</DataTable.Title>
-              <DataTable.Title>Warmup Time</DataTable.Title>
-              <DataTable.Title>Start Time</DataTable.Title>
+              <DataTable.Title >Session</DataTable.Title>
+              {meetData.sanction?.time1 ? <DataTable.Title>{meetData.sanction?.time1}</DataTable.Title> : ''}
+              {meetData.sanction?.time2 ? <DataTable.Title>{meetData.sanction?.time2}</DataTable.Title> : ''}
+              {meetData.sanction?.time3 ? <DataTable.Title>{meetData.sanction?.time3}</DataTable.Title> : ''}
+              {meetData.sanction?.time4 ? <DataTable.Title>{meetData.sanction?.time4}</DataTable.Title> : ''}
             </DataTable.Header>
             <ScrollView>
               {
                 meetData?.sessions?.map((item: Session) => {
                   return <DataTable.Row key={item.sessionId}
                     onPress={() => goToSessionDetails(item.sessionId)}>
-                    <DataTable.Cell>{item.sessionId}</DataTable.Cell>
-                    <DataTable.Cell>{item.name}</DataTable.Cell>
-                    <DataTable.Cell>{item.date}</DataTable.Cell>
-                    <DataTable.Cell>{getLocalTime(item?.time1)}</DataTable.Cell>
-                    <DataTable.Cell>{getLocalTime(item.time3)}</DataTable.Cell>
+                    <DataTable.Cell>{item.sessionId}-{item.name}</DataTable.Cell>
+                    {meetData.sanction?.time1 ? <DataTable.Cell>{getLocalTime(item?.time1)}</DataTable.Cell> : ''}
+                    {meetData.sanction?.time2 ? <DataTable.Cell>{getLocalTime(item.time2)}</DataTable.Cell> : ''}
+                    {meetData.sanction?.time3 ? <DataTable.Cell>{getLocalTime(item.time3)}</DataTable.Cell> : ''}
+                    {meetData.sanction?.time4 ? <DataTable.Cell>{getLocalTime(item.time4)}</DataTable.Cell> : ''}
                   </DataTable.Row>
                 })
               }
@@ -105,7 +106,7 @@ const styles = StyleSheet.create({
     flex: 1,
     flexDirection: "column",
     alignContent: "center",
-    // justifyContent: 'center',
+    justifyContent: 'space-evenly',
   },
   title: {
     fontSize: 20,
@@ -122,5 +123,8 @@ const styles = StyleSheet.create({
   subtext: {
     fontSize: 14,
     paddingLeft: 5,
+  },
+  cellAlgin: {
+    textAlign: 'center'
   }
 });
