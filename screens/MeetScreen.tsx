@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { ActivityIndicator, FlatList, Text, TextInput, ToastAndroid, StyleSheet, ScrollView, TouchableOpacity } from 'react-native';
+import { ActivityIndicator, FlatList, Text, TextInput, ToastAndroid, StyleSheet, ScrollView, TouchableOpacity, StyleProp, ViewStyle } from 'react-native';
 import { DataTable } from 'react-native-paper';
 import { MeetDetailsParamList, MeetSessionParamList, RootTabScreenProps } from '../types';
 // import { Meet } from '../assets/models/meet';
@@ -61,7 +61,7 @@ export default function MeetScreen({ navigation, route }: RootTabScreenProps<'Me
   return (
     <View style={styles.container} >
       {isLoading ? <ActivityIndicator size="large" color="#00ff00" /> :
-        <View >
+        <View>
           <TouchableLink url={meetData?.sanction?.siteLink} style={styles.title} text={meetData?.sanction?.name}></TouchableLink>
           <Text style={styles.subtext}>Status: {meetData?.sanction?.meetStatus}</Text>
           <View style={styles.separator} />
@@ -70,27 +70,28 @@ export default function MeetScreen({ navigation, route }: RootTabScreenProps<'Me
 
           {
             meetData?.sanction?.address2
-              ? <Text>{meetData?.sanction?.address2} {meetData?.sanction?.city}, {meetData?.sanction?.state}</Text>
-              : <Text>{meetData?.sanction?.city}, {meetData?.sanction?.state}</Text>
+              ? <Text style={styles.subtext}>{meetData?.sanction?.address2} {meetData?.sanction?.city}, {meetData?.sanction?.state}</Text>
+              : <Text style={styles.subtext}>{meetData?.sanction?.city}, {meetData?.sanction?.state}</Text>
           }
+
           <DataTable>
             <DataTable.Header>
               <DataTable.Title >Session</DataTable.Title>
-              {meetData.sanction?.time1 ? <DataTable.Title>{meetData.sanction?.time1}</DataTable.Title> : ''}
-              {meetData.sanction?.time2 ? <DataTable.Title>{meetData.sanction?.time2}</DataTable.Title> : ''}
-              {meetData.sanction?.time3 ? <DataTable.Title>{meetData.sanction?.time3}</DataTable.Title> : ''}
-              {meetData.sanction?.time4 ? <DataTable.Title>{meetData.sanction?.time4}</DataTable.Title> : ''}
+              {meetData.sanction?.time1 && <DataTable.Title>{meetData.sanction?.time1}</DataTable.Title>}
+              {meetData.sanction?.time2 && <DataTable.Title>{meetData.sanction?.time2}</DataTable.Title>}
+              {meetData.sanction?.time3 && <DataTable.Title>{meetData.sanction?.time3}</DataTable.Title>}
+              {meetData.sanction?.time4 && <DataTable.Title>{meetData.sanction?.time4}</DataTable.Title>}
             </DataTable.Header>
             <ScrollView>
               {
                 meetData?.sessions?.map((item: Session) => {
                   return <DataTable.Row key={item.sessionId}
                     onPress={() => goToSessionDetails(item.sessionId)}>
-                    <DataTable.Cell>{item.sessionId}-{item.name}</DataTable.Cell>
-                    {meetData.sanction?.time1 ? <DataTable.Cell>{getLocalTime(item?.time1)}</DataTable.Cell> : ''}
-                    {meetData.sanction?.time2 ? <DataTable.Cell>{getLocalTime(item.time2)}</DataTable.Cell> : ''}
-                    {meetData.sanction?.time3 ? <DataTable.Cell>{getLocalTime(item.time3)}</DataTable.Cell> : ''}
-                    {meetData.sanction?.time4 ? <DataTable.Cell>{getLocalTime(item.time4)}</DataTable.Cell> : ''}
+                    <DataTable.Cell><Text style={styles.cellText}> {item.sessionId}-{item.name}</Text></DataTable.Cell>
+                    {meetData.sanction?.time1 && <DataTable.Cell><Text style={styles.cellText}>{getLocalTime(item.time1)}</Text></DataTable.Cell>}
+                    {meetData.sanction?.time2 && <DataTable.Cell><Text style={styles.cellText}>{getLocalTime(item.time2)}</Text></DataTable.Cell>}
+                    {meetData.sanction?.time3 && <DataTable.Cell><Text style={styles.cellText}>{getLocalTime(item.time3)}</Text></DataTable.Cell>}
+                    {meetData.sanction?.time4 && <DataTable.Cell><Text style={styles.cellText}>{getLocalTime(item.time4)}</Text></DataTable.Cell>}
                   </DataTable.Row>
                 })
               }
@@ -101,12 +102,13 @@ export default function MeetScreen({ navigation, route }: RootTabScreenProps<'Me
   );
 }
 
+
 const styles = StyleSheet.create({
   container: {
     flex: 1,
     flexDirection: "column",
     alignContent: "center",
-    justifyContent: 'space-evenly',
+    // justifyContent: 'center',
   },
   title: {
     fontSize: 20,
@@ -124,7 +126,8 @@ const styles = StyleSheet.create({
     fontSize: 14,
     paddingLeft: 5,
   },
-  cellAlgin: {
-    textAlign: 'center'
+  cellText: {
+    textAlign: 'center',
+    fontSize: 12
   }
 });

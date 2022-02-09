@@ -7,10 +7,11 @@ import { Meet } from '../assets/models/meet';
 const row = (item: Meet, callback: Function) => (
     <DataTable.Row key={item.sanctionId}
         onPress={() => callback(item.sanctionId)}>
-        <DataTable.Cell>{item.name}</DataTable.Cell>
-        <DataTable.Cell>{item.getCityState()}</DataTable.Cell>
-        <DataTable.Cell>{item.getFromDate()}</DataTable.Cell>
-        <DataTable.Cell>{item.getToDate()}</DataTable.Cell>
+        <DataTable.Cell><Text style={gridstyles.textSize}>{item.getFromDate()}</Text></DataTable.Cell>
+        <DataTable.Cell><Text style={gridstyles.textSize}>{item.name}</Text></DataTable.Cell>
+        <DataTable.Cell numeric><Text style={gridstyles.textSize}>{item.getCityState()}</Text></DataTable.Cell>
+
+        {/* <DataTable.Cell numeric><Text style={gridstyles.textSize}>{item.getToDate()}</Text></DataTable.Cell> */}
     </DataTable.Row>
 );
 
@@ -70,15 +71,16 @@ export const MeetGrid = (props: { data: Meet[], filterString: string; clickCallb
 
         <DataTable>
             <DataTable.Header>
+                <DataTable.Title sortDirection={sortName === 'From' ? sortAscending ? 'ascending' : 'descending' : undefined}
+                    onPress={() => sort('From')}><Text style={gridstyles.header}>Start</Text></DataTable.Title>
                 <DataTable.Title
                     sortDirection={sortName === 'Name' ? sortAscending ? 'ascending' : 'descending' : undefined}
-                    onPress={() => sort('Name')} >Name</DataTable.Title>
-                <DataTable.Title sortDirection={sortName === 'Location' ? sortAscending ? 'ascending' : 'descending' : undefined}
-                    onPress={() => sort('Location')}>Location</DataTable.Title>
-                <DataTable.Title sortDirection={sortName === 'From' ? sortAscending ? 'ascending' : 'descending' : undefined}
-                    onPress={() => sort('From')}>From</DataTable.Title>
-                <DataTable.Title sortDirection={sortName === 'To' ? sortAscending ? 'ascending' : 'descending' : undefined}
-                    onPress={() => sort('To')}>To</DataTable.Title>
+                    onPress={() => sort('Name')} > <Text style={gridstyles.header}>Name</Text></DataTable.Title>
+                <DataTable.Title numeric sortDirection={sortName === 'Location' ? sortAscending ? 'ascending' : 'descending' : undefined}
+                    onPress={() => sort('Location')}><Text style={gridstyles.header}>Location</Text></DataTable.Title>
+
+                {/* <DataTable.Title sortDirection={sortName === 'To' ? sortAscending ? 'ascending' : 'descending' : undefined}
+                    onPress={() => sort('To')}><Text style={gridstyles.header}>To</Text></DataTable.Title> */}
             </DataTable.Header>
             <ScrollView>
                 {
@@ -94,7 +96,9 @@ export const MeetGrid = (props: { data: Meet[], filterString: string; clickCallb
 
 export const gridstyles = StyleSheet.create({
     container: {
-        flex: 1, padding: 12
+        flex: 1,
+        // padding: 12
+
     },
     input: {
         height: 40,
@@ -102,4 +106,11 @@ export const gridstyles = StyleSheet.create({
         borderWidth: 1,
         padding: 10,
     },
+    header: {
+        fontSize: 10,
+        fontWeight: 'bold',
+    },
+    textSize: {
+        fontSize: 10,
+    }
 });
